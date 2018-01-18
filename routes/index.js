@@ -3,13 +3,6 @@ var router = express.Router();
 var twitter = require('./twitter');
 var Enum = require('enum');
 
-
-// enum timerUnitMeasure = {
-//     seconds: 1000,
-//     minutes: 60 * 1000,
-//     hours: 60 * 60 * 1000,
-//     days: 24 * 60 * 60 * 1000
-// };
 var timerUnitMeasure = new Enum({
     seconds: 1000,
     minutes: 60 * 1000,
