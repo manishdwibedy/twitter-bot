@@ -13,6 +13,7 @@
     "get-twitter-bearer-token": "^1.0.0",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
+    "request": "^2.83.0",
     "serve-favicon": "~2.4.5",
     "twitter": "^1.7.1"
   }

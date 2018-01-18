@@ -18,7 +18,24 @@ getBearerToken(config.consumer_key, config.consumer_secret, function(err, respon
     }
 });
 
+function searchTweets(params){
+    // Return new promise
+    return new Promise(function(resolve, reject) {
 
+        // Do async job
+        this.T.get('search/tweets', params, function(err, data, response) {
+            if(!err){
+                var json = JSON.parse(response.body);
+                resolve(json);
+                // This is where the magic will happen
+            } else {
+                console.log(err);
+                reject(err);
+            }
+        })
+    })
+
+}
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     // Set up your search parameters
@@ -30,21 +47,12 @@ router.get('/', function(req, res, next) {
         //geocode: '34.055439,-118.284053, 1000mi'
     };
 
-    this.T.get('search/tweets', la_search, function(err, data, response) {
-        if(!err){
-            var json = JSON.parse(response.body);
-            console.log(data);
-            res.send(json);
-            // This is where the magic will happen
-        } else {
-            console.log(err);
-            res.send({
-                'error': true,
-                'error_detail': err
-            });
-        }
+    var search = searchTweets(la_search);
+    search.then(function(result) {
+        res.send(result);
+    }, function(err) {
+        res.send(err);
     })
-
 });
 
 module.exports = router;
