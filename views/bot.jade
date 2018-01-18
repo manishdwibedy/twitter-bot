@@ -69,7 +69,7 @@ html(lang='en')
                             p
                                 | Now lets respond to possible leads automatically.
                             br
-                            btn.btn.btn-outline-default.btn-round
+                            btn.btn.btn-outline-default.btn-round#setting
                                 i.fa.fa-cog
                                 |  Settings
                     br
@@ -145,3 +145,12 @@ html(lang='en')
     script(src='/javascripts/bootstrap.min.js', type='text/javascript')
     // Paper Kit Initialization snd functons
     script(src='/javascripts/paper-kit.js?v=2.1.0')
+
+    // popup
+    script(src='/javascripts/vex.combined.min.js')
+    script.
+        vex.defaultOptions.className = 'vex-theme-os'
+    link(rel='stylesheet', href='/stylesheets/vex.css')
+    link(rel='stylesheet', href='/stylesheets/vex-theme-os.css')
+
+    script(src='/javascripts/bot.js', type='text/javascript')
