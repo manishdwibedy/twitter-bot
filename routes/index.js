@@ -39,12 +39,12 @@ function search(arg) {
         + now.getSeconds();
     console.log(date);
 
-    var search = twitter.searchTweets(la_search);
-    search.then(function(result) {
-        console.log(result);
-    }, function(err) {
-        console.log(err);
-    })
+    // var search = twitter.searchTweets(la_search);
+    // search.then(function(result) {
+    //     console.log(result);
+    // }, function(err) {
+    //     console.log(err);
+    // })
 }
 
 /* GET home page. */
@@ -56,30 +56,47 @@ router.get('/', function(req, res, next) {
 var timerID = null;
 
 /* POST start bot */
-router.get('/start', function(req, res, next) {
+router.post('/start', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
     }
     this.timerID = setInterval(search, timerCount * timerUnit);
-    res.render('index', { title: 'Express' });
+
+    var response = {
+        'running': this.timerID != null,
+        'date': new Date().getTime()
+    };
+    res.send(response);
+
 });
 
 /* POST stop bot */
-router.get('/stop', function(req, res, next) {
+router.post('/stop', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
+        this.timerID = null;
     }
-    res.render('index', { title: 'Express' });
+
+    var response = {
+        'running': this.timerID != null,
+        'date': new Date().getTime()
+    };
+    res.send(response);
 });
 
 /* POST update bot search parameters */
-router.get('/update', function(req, res, next) {
+router.post('/update', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
     }
     timerCount *= 2;
     this.timerID = setInterval(search, timerCount * timerUnit);
-    res.render('index', { title: 'Express' });
+
+    var response = {
+        'started': this.timerID != null,
+        'date': new Date().getTime()
+    };
+
 });
 
 module.exports = router;
