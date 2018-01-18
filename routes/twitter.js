@@ -18,7 +18,7 @@ getBearerToken(config.consumer_key, config.consumer_secret, function(err, respon
     }
 });
 
-function searchTweets(params){
+var searchTweets = function(params) {
     // Return new promise
     return new Promise(function(resolve, reject) {
 
@@ -34,25 +34,6 @@ function searchTweets(params){
             }
         })
     })
+};
 
-}
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    // Set up your search parameters
-    var la_search = {
-        q: 'looking, roommate, roommates',
-        count: 1000,
-        result_type: 'mixed',
-        lang: 'en',
-        //geocode: '34.055439,-118.284053, 1000mi'
-    };
-
-    var search = searchTweets(la_search);
-    search.then(function(result) {
-        res.send(result);
-    }, function(err) {
-        res.send(err);
-    })
-});
-
-module.exports = router;
+module.exports.searchTweets = searchTweets;
