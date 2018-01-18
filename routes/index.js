@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var twitter = require('./twitter');
 
-function myFunc(arg) {
+function search(arg) {
     var la_search = {
         q: 'looking, roommate, roommates',
         count: 1000,
@@ -28,7 +28,7 @@ var timerID = ''
 
 /* GET home page. */
 router.get('/start', function(req, res, next) {
-    this.timerID = setInterval(myFunc, 5000);
+    this.timerID = setInterval(search, 5000);
     res.render('index', { title: 'Express' });
 });
 
