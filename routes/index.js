@@ -78,10 +78,9 @@ router.post('/stop', function(req, res, next) {
 });
 
 /* GET home page. */
-router.get('/update', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+router.get('/bot', function(req, res, next) {
+    res.render('bot', { name: 'Twitter' });
 });
-
 
 /* POST update bot search parameters */
 router.post('/update', function(req, res, next) {
