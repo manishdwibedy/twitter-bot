@@ -77,6 +77,12 @@ router.post('/stop', function(req, res, next) {
     res.send(response);
 });
 
+/* GET home page. */
+router.get('/update', function(req, res, next) {
+    res.render('index', { title: 'Express' });
+});
+
+
 /* POST update bot search parameters */
 router.post('/update', function(req, res, next) {
     if (this.timerID != null){
