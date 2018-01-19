@@ -17,7 +17,7 @@ var timerUnit = timerUnitMeasure.seconds;
 function search(arg) {
     var la_search = {
         q: 'looking, roommate, roommates',
-        count: 1000,
+        count: 100,
         result_type: 'mixed',
         lang: 'en'
         //geocode: '34.055439,-118.284053, 1000mi'
@@ -32,12 +32,15 @@ function search(arg) {
         + now.getSeconds();
     console.log(date);
 
-    // var search = twitter.searchTweets(la_search);
-    // search.then(function(result) {
-    //     console.log(result);
-    // }, function(err) {
-    //     console.log(err);
-    // })
+    for(var i=0;i<10;i++){
+        var search = twitter.searchTweets(la_search);
+        search.then(function(result) {
+            console.log(result);
+        }, function(err) {
+            console.log(err);
+        })
+    }
+
 }
 
 /* GET home page. */
