@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var twitter = require('./twitter');
 var Enum = require('enum');
+var sleep = require('sleep');
+
 
 var timerUnitMeasure = new Enum({
     seconds: 1000,
@@ -11,18 +13,26 @@ var timerUnitMeasure = new Enum({
 });
 
 
-var timerCount = 5;
+var timerCount = 20;
 var timerUnit = timerUnitMeasure.seconds;
 
-function search(arg) {
-    var la_search = {
-        q: 'looking, roommate, roommates',
-        count: 100,
-        result_type: 'mixed',
-        lang: 'en'
-        //geocode: '34.055439,-118.284053, 1000mi'
-    };
+var la_search = {
+    q: 'looking, roommate, roommates',
+    count: 100,
+    result_type: 'mixed',
+    lang: 'en'
+    //geocode: '34.055439,-118.284053, 1000mi'
+};
+tweets = [];
 
+iterations = 3;
+
+function search(iteration) {
+    if (iteration == 0){
+        print(tweets);
+        tweets.clear();
+        return;
+    }
     var now = new Date();
     var date = "Last Sync: " + now.getDate() + "/"
         + (now.getMonth()+1)  + "/"
@@ -32,14 +42,13 @@ function search(arg) {
         + now.getSeconds();
     console.log(date);
 
-    for(var i=0;i<10;i++){
-        var search = twitter.searchTweets(la_search);
-        search.then(function(result) {
-            console.log(result);
-        }, function(err) {
-            console.log(err);
-        })
-    }
+    twitter.searchTweets(la_search).then(function(result) {
+        tweets = tweets.concat(result.statuses);
+        setTimeout(search, 1 * timerUnit, iteration-1);
+    }, function(err) {
+        console.log(err);
+    });
+
 
 }
 
@@ -56,7 +65,7 @@ router.post('/start', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
     }
-    this.timerID = setInterval(search, timerCount * timerUnit);
+    this.timerID = setInterval(search, timerCount * timerUnit, iterations);
 
     var response = {
         'running': this.timerID != null,
