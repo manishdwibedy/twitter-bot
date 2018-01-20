@@ -51,10 +51,10 @@ var la_search = {
     lang: 'en'
 };
 
-
-searchTweets(la_search).then(
+var filtered_tweets = []
+var contacted_people = searchTweets(la_search).then(
     function(result) {
-        var filtered_tweets = []
+
         var tweets = result.statuses;
         for (var i=0; i<tweets.length; i++){
             var tweet = tweets[i];
@@ -63,30 +63,36 @@ searchTweets(la_search).then(
             if (author.followers_count > 100){
                 if (author.location.length > 0
                     && author.location.toLowerCase().match(/(los angeles|new york)/) != null) {
-                    filtered_tweets.push(tweet.text);
+                    var replyTo = {
+                        status: "👋",
+                        in_reply_to_status_id: tweet.id_str,
+                        auto_populate_reply_metadata: true
+                    };
+
+                    console.log('Replying to ' + author.name);
+                    console.log('The user tweeted ' + tweet.text);
+                    console.log('User profile is http://twitter.com/' + author.screen_name);
+                    console.log('at ' + tweet.created_at);
+                    console.log('\n\n');
+                    filtered_tweets.push({
+                        author: author,
+                        tweet: tweet
+                    })
+                    // reply(replyTo).then(function(result) {
+                    //     console.log(result);
+                    // });
                 }
             }
         }
+        return filtered_tweets;
+    },
+    function(err) {
+        console.log(err);
+    }
+).then(function(result) {
         console.log(filtered_tweets);
-    }, function(err) {
-    console.log(err);
-});
+    }
+);
 
 
-
-
-
-// searchTweets(la_search).then(function(result) {
-//     var tweet = result.statuses[0];
-//     var replyTo = {
-//         status: "👋",
-//         in_reply_to_status_id: tweet.id_str,
-//         auto_populate_reply_metadata: true
-//     };
-//
-//     reply(replyTo).then(function(result) {
-//         console.log(result);
-//     });
-//
-// });
 
