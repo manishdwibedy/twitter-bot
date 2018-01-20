@@ -2,6 +2,7 @@ const getBearerToken = require('get-twitter-bearer-token');
 var timediff = require('timediff');
 var Twitter = require('twitter');
 var config = require('./routes/config.js');
+var dateFormat = require('dateformat');
 
 var T = new Twitter(config);
 
@@ -44,13 +45,10 @@ var searchTweets = function(params) {
 
 
 var la_search = {
-    q: 'roommate',
+    q: 'looking for roommate',
     count: 100,
     result_type: 'recent',
-    lang: 'en',
-    //max_id: 954497154877358079
-    // since_id: 9007199254740991
-    //since_id: 954094550313766912
+    lang: 'en'
 };
 
 
@@ -61,13 +59,11 @@ searchTweets(la_search).then(
         for (var i=0; i<tweets.length; i++){
             var tweet = tweets[i];
             var author = tweet.user;
-            timediff('2015-01-01', '2018-05-02 02:15:10.777', 'YDHms');
 
             if (author.followers_count > 100){
                 if (author.location.length > 0
                     && author.location.toLowerCase().match(/(los angeles|new york)/) != null) {
-                    filtered_tweets.push(tweet);
-
+                    filtered_tweets.push(tweet.text);
                 }
             }
         }
