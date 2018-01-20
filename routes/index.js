@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 var twitter = require('./twitter');
 var Enum = require('enum');
-var sleep = require('sleep');
-
+var Set = require('set')
 
 var timerUnitMeasure = new Enum({
     seconds: 1000,
@@ -13,13 +12,14 @@ var timerUnitMeasure = new Enum({
 });
 
 
-var timerCount = 20;
+var timerCount = 10;
 var timerUnit = timerUnitMeasure.seconds;
 
 tweets = [];
-
-iterations = 3;
+iterations = 1;
 var filtered_tweets = [];
+var unique_tweet_id = new Set([]);
+
 function search(iteration) {
     if (iteration == 0){
         print(tweets);
@@ -41,7 +41,7 @@ function search(iteration) {
         result_type: 'recent',
         lang: 'en'
     };
-
+    var results = []
     twitter.searchTweets(la_search).then(
         function(result) {
 
@@ -53,21 +53,24 @@ function search(iteration) {
                 if (author.followers_count > 100){
                     if (author.location.length > 0
                         && author.location.toLowerCase().match(/(los angeles|new york)/) != null) {
-                        var replyTo = {
-                            status: "👋",
-                            in_reply_to_status_id: tweet.id_str,
-                            auto_populate_reply_metadata: true
-                        };
 
-                        console.log('Replying to ' + author.name);
-                        console.log('The user tweeted ' + tweet.text);
-                        console.log('User profile is http://twitter.com/' + author.screen_name);
-                        console.log('at ' + tweet.created_at);
-                        console.log('\n\n');
-                        filtered_tweets.push({
-                            author: author,
-                            tweet: tweet
-                        })
+                        if (!unique_tweet_id.contains(tweet.id_str)){
+                            var replyTo = {
+                                status: "👋",
+                                in_reply_to_status_id: tweet.id_str,
+                                auto_populate_reply_metadata: true
+                            };
+
+                            console.log('Replying to ' + author.name);
+                            console.log('The user tweeted ' + tweet.text);
+                            console.log('User profile is http://twitter.com/' + author.screen_name);
+                            console.log('at ' + tweet.created_at);
+                            console.log('\n\n');
+
+                            filtered_tweets.push(tweet);
+                            unique_tweet_id.add(tweet.id_str);
+                        }
+
                         // reply(replyTo).then(function(result) {
                         //     console.log(result);
                         // });
@@ -80,9 +83,8 @@ function search(iteration) {
             console.log(err);
         }
     ).then(function(result) {
-            console.log(filtered_tweets);
-        }
-    );
+        //filtered_tweets.push(results);
+    });
 
     // twitter.searchTweets(la_search).then(function(result) {
     //     tweets = tweets.concat(result.statuses);
@@ -154,12 +156,12 @@ router.post('/update', function(req, res, next) {
 /* GET filtered users/tweets */
 router.get('/filtered_users', function(req, res, next) {
 
-    console.log(filtered_tweets);
+    console.log('');
     var response = {
         'users': filtered_tweets,
         'date': new Date().getTime()
     };
-
+    res.send(response);
 });
 
 module.exports = router;
