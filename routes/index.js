@@ -151,4 +151,15 @@ router.post('/update', function(req, res, next) {
 
 });
 
+/* GET filtered users/tweets */
+router.get('/filtered_users', function(req, res, next) {
+
+    console.log(filtered_tweets);
+    var response = {
+        'users': filtered_tweets,
+        'date': new Date().getTime()
+    };
+
+});
+
 module.exports = router;
