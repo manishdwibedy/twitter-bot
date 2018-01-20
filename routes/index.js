@@ -16,17 +16,10 @@ var timerUnitMeasure = new Enum({
 var timerCount = 20;
 var timerUnit = timerUnitMeasure.seconds;
 
-var la_search = {
-    q: 'looking, roommate, roommates',
-    count: 100,
-    result_type: 'mixed',
-    lang: 'en'
-    //geocode: '34.055439,-118.284053, 1000mi'
-};
 tweets = [];
 
 iterations = 3;
-
+var filtered_tweets = [];
 function search(iteration) {
     if (iteration == 0){
         print(tweets);
@@ -42,12 +35,61 @@ function search(iteration) {
         + now.getSeconds();
     console.log(date);
 
-    twitter.searchTweets(la_search).then(function(result) {
-        tweets = tweets.concat(result.statuses);
-        setTimeout(search, 1 * timerUnit, iteration-1);
-    }, function(err) {
-        console.log(err);
-    });
+    var la_search = {
+        q: 'looking for roommate',
+        count: 100,
+        result_type: 'recent',
+        lang: 'en'
+    };
+
+    twitter.searchTweets(la_search).then(
+        function(result) {
+
+            var tweets = result.statuses;
+            for (var i=0; i<tweets.length; i++){
+                var tweet = tweets[i];
+                var author = tweet.user;
+
+                if (author.followers_count > 100){
+                    if (author.location.length > 0
+                        && author.location.toLowerCase().match(/(los angeles|new york)/) != null) {
+                        var replyTo = {
+                            status: "👋",
+                            in_reply_to_status_id: tweet.id_str,
+                            auto_populate_reply_metadata: true
+                        };
+
+                        console.log('Replying to ' + author.name);
+                        console.log('The user tweeted ' + tweet.text);
+                        console.log('User profile is http://twitter.com/' + author.screen_name);
+                        console.log('at ' + tweet.created_at);
+                        console.log('\n\n');
+                        filtered_tweets.push({
+                            author: author,
+                            tweet: tweet
+                        })
+                        // reply(replyTo).then(function(result) {
+                        //     console.log(result);
+                        // });
+                    }
+                }
+            }
+            return filtered_tweets;
+        },
+        function(err) {
+            console.log(err);
+        }
+    ).then(function(result) {
+            console.log(filtered_tweets);
+        }
+    );
+
+    // twitter.searchTweets(la_search).then(function(result) {
+    //     tweets = tweets.concat(result.statuses);
+    //     setTimeout(search, 1 * timerUnit, iteration-1);
+    // }, function(err) {
+    //     console.log(err);
+    // });
 
 
 }
