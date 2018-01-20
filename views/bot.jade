@@ -74,6 +74,11 @@ html(lang='en')
                                 |  Start
                             br
                             br
+                            btn.btn.btn-outline-default.btn-round#getResults
+                                i.fa.fa-play
+                                |  Refresh Result
+                            br
+                            br
                             btn.btn.btn-outline-default.btn-round#setting
                                 i.fa.fa-cog
                                 |  Settings
@@ -82,9 +87,7 @@ html(lang='en')
                         .nav-tabs-wrapper
                             ul.nav.nav-tabs(role='tablist')
                                 li.nav-item
-                                    a.nav-link.active(data-toggle='tab', href='#follows', role='tab') Follows
-                                li.nav-item
-                                    a.nav-link(data-toggle='tab', href='#following', role='tab') Following
+                                    a.nav-link.active(data-toggle='tab', href='#follows', role='tab') Replying to
                     // Tab panes
                     .tab-content.following
                         #follows.tab-pane.active(role='tabpanel')
@@ -106,23 +109,6 @@ html(lang='en')
                                                             input.form-check-input(type='checkbox', value='', checked='')
                                                             span.form-check-sign
                                         hr
-                                        li
-                                            .row
-                                                .col-md-2.ml-auto.mr-auto
-                                                    img.img-circle.img-no-padding.img-responsive(src='/images/faces/ayo-ogunseinde-2.jpg', alt='Circle Image')
-                                                .col-md-7.col-sm-4
-                                                    h6
-                                                        | Banks
-                                                        br
-                                                        small Singer
-                                                .col-md-3.col-sm-2
-                                                    .form-check
-                                                        label.form-check-label
-                                                            input.form-check-input(type='checkbox', value='')
-                                                            span.form-check-sign
-                        #following.tab-pane.text-center(role='tabpanel')
-                            h3.text-muted Not following anyone yet :(
-                            button.btn.btn-warning.btn-round Find artists
         footer.footer.section-dark
             .container
                 .row
