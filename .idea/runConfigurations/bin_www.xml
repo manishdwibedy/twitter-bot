@@ -2,8 +2,33 @@
   <configuration default="false" name="bin/www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="bin/www" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="twitter-bot:*" />
+      <env name="CONSUMER_KEY" value="4TxXMsAGMnWLdXq8mGrQtEZiq" />
+      <env name="CONSUMER_SECRET" value="qxt46HL0zv4xGBzsuRyLOU49zBHwbhMDTi9jOyXuRof6GPj9q8" />
+      <env name="ACCESS_TOKEN" value="950487475197063168-us94bapPXLMEUFbVffKo5UXImDAXRJ2" />
+      <env name="ACCESS_TOKEN_SECRET" value="gsBxdDy8jLRHlvYuBvea7GWbyeMywq2fDt2TLVmAp4diY" />
     </envs>
     <browser url="http://localhost:3000/" />
+    <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
+      <option name="envVars">
+        <list />
+      </option>
+      <option name="extraHosts">
+        <list />
+      </option>
+      <option name="links">
+        <list />
+      </option>
+      <option name="networkDisabled" value="false" />
+      <option name="networkMode" value="bridge" />
+      <option name="portBindings">
+        <list />
+      </option>
+      <option name="publishAllPorts" value="false" />
+      <option name="version" value="1" />
+      <option name="volumeBindings">
+        <list />
+      </option>
+    </EXTENSION>
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
       <browser url="http://localhost:3000/" />
     </EXTENSION>

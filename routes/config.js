@@ -1,9 +1,9 @@
 // config.js
 
 module.exports = {
-    consumer_key: 'NK6l2E4jgjybsMTH4A7Ur9RGs',
-    consumer_secret: 'mVCMgE0UfRRXEqvYy37MyPRFOSAWvi3ClQbS8sUiZPm2Acv8VL',
+    consumer_key: process.env.CONSUMER_KEY,
+    consumer_secret: process.env.CONSUMER_SECRET,
     bearer_token: '',
-    access_token_key: '920035559363395584-ezx1HsKr3QqLpNSPgV5jawmbjLIDIoc',
-    access_token_secret: 'Z3Y4ixcR5VFI0UAC05XakNnTlFtTmanYcRdOz03lmALR6'
+    access_token_key: process.env.ACCESS_TOKEN,
+    access_token_secret: process.env.ACCESS_TOKEN_SECRET
 };
