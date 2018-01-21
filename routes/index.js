@@ -31,18 +31,18 @@ function reset_reply_count(){
 
 function search(iteration) {
     if (iteration == 0){
-        print(tweets);
+        // print(tweets);
         tweets.clear();
         return;
     }
     var now = new Date();
-    var date = "Last Sync: " + now.getDate() + "/"
-        + (now.getMonth()+1)  + "/"
-        + now.getFullYear() + " @ "
-        + now.getHours() + ":"
-        + now.getMinutes() + ":"
-        + now.getSeconds();
-    console.log(date);
+    // var date = "Last Sync: " + now.getDate() + "/"
+    //     + (now.getMonth()+1)  + "/"
+    //     + now.getFullYear() + " @ "
+    //     + now.getHours() + ":"
+    //     + now.getMinutes() + ":"
+    //     + now.getSeconds();
+    // console.log(date);
 
     var la_search = {
         q: 'looking for roommate',
@@ -82,7 +82,7 @@ function search(iteration) {
                                 reply_left -= 1;
                                 console.log('Reply to the user');
                                 twitter.reply(replyTo).then(function(result) {
-                                    console.log(result);
+                                    // console.log(result);
                                 });
                             }
                         }
