@@ -20,6 +20,15 @@ iterations = 1;
 var filtered_tweets = [];
 var unique_tweet_id = new Set([]);
 
+var max_reply_per_period = 3;
+var reply_left = max_reply_per_period;
+var replyCount = 1;
+var replyUnit = timerUnitMeasure.minutes;
+
+function reset_reply_count(){
+    reply_left = max_reply_per_period;
+}
+
 function search(iteration) {
     if (iteration == 0){
         print(tweets);
@@ -61,7 +70,6 @@ function search(iteration) {
                                 auto_populate_reply_metadata: true
                             };
 
-                            console.log('Replying to ' + author.name);
                             console.log('The user tweeted ' + tweet.text);
                             console.log('User profile is http://twitter.com/' + author.screen_name);
                             console.log('at ' + tweet.created_at);
@@ -69,11 +77,15 @@ function search(iteration) {
 
                             filtered_tweets.push(tweet);
                             unique_tweet_id.add(tweet.id_str);
-                        }
 
-                        // reply(replyTo).then(function(result) {
-                        //     console.log(result);
-                        // });
+                            if (reply_left > 0){
+                                reply_left -= 1;
+                                console.log('Reply to the user');
+                                twitter.reply(replyTo).then(function(result) {
+                                    console.log(result);
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -103,6 +115,7 @@ router.get('/', function(req, res, next) {
 
 
 var timerID = null;
+var reply_timer = null;
 
 /* POST start bot */
 router.post('/start', function(req, res, next) {
@@ -110,6 +123,7 @@ router.post('/start', function(req, res, next) {
         clearInterval(this.timerID);
     }
     this.timerID = setInterval(search, timerCount * timerUnit, iterations);
+    this.reply_timer = setInterval(reset_reply_count, replyCount * replyUnit);
 
     var response = {
         'running': this.timerID != null,
@@ -124,6 +138,11 @@ router.post('/stop', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
         this.timerID = null;
+    }
+
+    if (this.reply_timer != null){
+        clearInterval(this.reply_timer);
+        this.reply_timer = null;
     }
 
     var response = {
@@ -142,15 +161,24 @@ router.get('/bot', function(req, res, next) {
 router.post('/update', function(req, res, next) {
     if (this.timerID != null){
         clearInterval(this.timerID);
+        this.timerID = null;
     }
+
+    if (this.reply_timer != null){
+        clearInterval(this.reply_timer);
+        this.reply_timer = null;
+    }
+
     timerCount *= 2;
     this.timerID = setInterval(search, timerCount * timerUnit);
+    this.reply_timer = setInterval(reset_reply_count, replyCount * replyUnit);
 
     var response = {
         'started': this.timerID != null,
         'date': new Date().getTime()
     };
 
+    res.send(response);
 });
 
 /* GET filtered users/tweets */

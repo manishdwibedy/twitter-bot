@@ -73,5 +73,5 @@ var searchTweets = function(params) {
 //         })
 //     })
 // };
-
+module.exports.reply = reply;
 module.exports.searchTweets = searchTweets;
