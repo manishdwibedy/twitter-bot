@@ -23,7 +23,7 @@ var unique_tweet_id = new Set([]);
 var max_reply_per_period = 3;
 var reply_left = max_reply_per_period;
 var replyCount = 1;
-var replyUnit = timerUnitMeasure.minutes;
+var replyUnit = timerUnitMeasure.days;
 
 function reset_reply_count(){
     reply_left = max_reply_per_period;
